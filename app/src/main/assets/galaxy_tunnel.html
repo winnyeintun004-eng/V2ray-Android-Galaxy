@@ -7,919 +7,104 @@
   <link rel="icon" href="https://i.ibb.co/V0NYnWk9/1777224598110.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <title>Galaxy Tunnel Client</title>
-  <link rel="icon" href="https://i.ibb.co/V0NYnWk9/1777224598110.png">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     :root {
-      --bg-primary: #ffffff;
-      --bg-secondary: #f5f5f5;
-      --text-primary: #000000;
-      --text-secondary: #666666;
-      --border-color: #e5e5e5;
-      --card-bg: #ffffff;
-      --header-bg: #ffffff;
-      --button-bg: #000000;
-      --button-text: #ffffff;
-      --button-hover: #222222;
-      --sidebar-bg: #ffffff;
-      --sidebar-border: #e5e5e5;
-      --accent: #000000;
-      --success: #10b981;
-      --warning: #d97706;
-      --font-title: 26px;
-      --font-subtitle: 13px;
-      --font-base: 14px;
-      --font-label: 12px;
+      --bg-primary: #ffffff; --bg-secondary: #f5f5f5; --text-primary: #000000; --text-secondary: #666666;
+      --border-color: #e5e5e5; --card-bg: #ffffff; --header-bg: #ffffff; --button-bg: #000000;
+      --button-text: #ffffff; --sidebar-bg: #ffffff; --sidebar-border: #e5e5e5; --accent: #000000;
+      --success: #10b981; --warning: #d97706;
+      --font-title: 26px; --font-subtitle: 13px; --font-base: 14px; --font-label: 12px;
     }
-
     body.dark-mode {
-      --bg-primary: #0a0a09;
-      --bg-secondary: #161614;
-      --text-primary: #ffffff;
-      --text-secondary: #a3a39e;
-      --border-color: #272724;
-      --card-bg: #161614;
-      --header-bg: #0a0a09;
-      --button-bg: #ffffff;
-      --button-text: #000000;
-      --button-hover: #e5e5e5;
-      --sidebar-bg: #161614;
-      --sidebar-border: #272724;
-      --accent: #ffffff;
+      --bg-primary: #0a0a09; --bg-secondary: #161614; --text-primary: #ffffff; --text-secondary: #a3a39e;
+      --border-color: #272724; --card-bg: #161614; --header-bg: #0a0a09; --button-bg: #ffffff;
+      --button-text: #000000; --sidebar-bg: #161614; --sidebar-border: #272724; --accent: #ffffff;
     }
-
-    body.size-small {
-      --font-title: 22px;
-      --font-subtitle: 11px;
-      --font-base: 12px;
-      --font-label: 10px;
-    }
-    body.size-medium {
-      --font-title: 26px;
-      --font-subtitle: 13px;
-      --font-base: 14px;
-      --font-label: 12px;
-    }
-    body.size-large {
-      --font-title: 30px;
-      --font-subtitle: 15px;
-      --font-base: 17px;
-      --font-label: 14px;
-    }
-
-    body { 
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      min-height: 100vh;
-      font-size: var(--font-base);
-      transition: background-color 0.2s ease, color 0.2s ease;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .sidebar {
-      position: fixed;
-      left: -280px;
-      top: 0;
-      width: 280px;
-      height: 100vh;
-      background: var(--sidebar-bg);
-      border-right: 1px solid var(--sidebar-border);
-      transition: left 0.3s ease;
-      z-index: 40;
-      overflow-y: auto;
-    }
-    .sidebar.active { left: 0; }
-    .sidebar-header {
-      padding: 20px 16px;
-      border-bottom: 1px solid var(--sidebar-border);
-      font-size: calc(var(--font-base) + 4px);
-      font-weight: 700;
-      color: var(--text-primary);
-    }
-    .sidebar-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 14px 16px;
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      border-left: 3px solid transparent;
-      font-weight: 500;
-      font-size: var(--font-base);
-    }
-    .sidebar-item:hover {
-      background: var(--bg-secondary);
-      color: var(--text-primary);
-    }
-    .sidebar-item.active {
-      background: var(--bg-secondary);
-      color: var(--text-primary);
-      border-left-color: var(--text-primary);
-      font-weight: 700;
-    }
-    .sidebar-item i { width: 22px; text-align: center; }
-
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.4);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-      z-index: 30;
-    }
-    .overlay.active { opacity: 1; pointer-events: auto; }
-
-    header {
-      background: var(--header-bg);
-      border-bottom: 1px solid var(--border-color);
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 20;
-    }
-    .header-title {
-      font-size: calc(var(--font-base) + 3px);
-      font-weight: 700;
-    }
-    .lang-btn, .opt-btn {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
-      padding: 6px 12px;
-      border-radius: 4px;
-      font-size: var(--font-label);
-      font-weight: 600;
-      cursor: pointer;
-      color: var(--text-secondary);
-      transition: all 0.2s;
-    }
-    .lang-btn.active, .opt-btn.active {
-      background: var(--button-bg);
-      color: var(--button-text);
-      border-color: var(--button-bg);
-    }
-
-    main {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px 16px 100px;
-    }
-
-    .page-header { text-align: center; margin-bottom: 24px; }
-    .page-title { font-size: var(--font-title); font-weight: 700; margin-bottom: 4px; }
-    .page-subtitle { font-size: var(--font-subtitle); color: var(--text-secondary); }
-
-    .page-content { display: none; }
-    .page-content.active { display: block; animation: fadeIn 0.2s ease; }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* VPN Dashboard */
-    .conn-hub-panel {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 24px;
-      margin-bottom: 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-    }
-    .vpn-power-container {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    .vpn-outer-pulse {
-      position: absolute;
-      width: 170px;
-      height: 170px;
-      border-radius: 50%;
-      background: rgba(16, 185, 129, 0.08);
-      animation: vpnPulse 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-      z-index: 1;
-      display: none;
-    }
-    @keyframes vpnPulse {
-      0% { transform: scale(0.9); opacity: 0.9; }
-      100% { transform: scale(1.4); opacity: 0; }
-    }
-    .vpn-btn {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: var(--bg-secondary);
-      border: 4px solid var(--border-color);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 2;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      outline: none;
-    }
-    .vpn-btn:active { transform: scale(0.95); }
-    .vpn-btn.connected {
-      border-color: var(--success);
-      background: rgba(16, 185, 129, 0.06);
-      box-shadow: 0 0 25px rgba(16, 185, 129, 0.2);
-    }
-    .vpn-btn.connecting {
-      border-color: var(--warning);
-      animation: borderFlash 1s infinite alternate;
-      background: rgba(217, 119, 6, 0.06);
-    }
-    @keyframes borderFlash {
-      0% { border-color: var(--border-color); }
-      100% { border-color: var(--warning); }
-    }
-    .vpn-btn i {
-      font-size: 28px;
-      color: var(--text-secondary);
-      transition: color 0.3s;
-    }
-    .vpn-btn.connected i { color: var(--success); }
-    .vpn-btn.connecting i { color: var(--warning); }
-    .vpn-status-txt {
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      margin-top: 6px;
-      color: var(--text-secondary);
-    }
-    .vpn-btn.connected .vpn-status-txt { color: var(--success); }
-    .vpn-btn.connecting .vpn-status-txt { color: var(--warning); }
-
-    /* HUD Metrics */
-    #hud-metrics {
-      width: 100%;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-top: 16px;
-      border-top: 1px solid var(--border-color);
-      padding-top: 16px;
-      text-align: center;
-    }
-    #hud-metrics.hidden { display: none; }
-    .metric-label {
-      font-size: 9px;
-      text-transform: uppercase;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      color: var(--text-secondary);
-    }
-    .metric-value {
-      font-family: 'SF Mono', Monaco, monospace;
-      font-weight: 700;
-      font-size: 13px;
-      margin-top: 4px;
-      color: var(--text-primary);
-    }
-
-    /* Section Label */
-    .section-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      font-weight: 800;
-      letter-spacing: 1px;
-      color: var(--text-secondary);
-      margin-bottom: 12px;
-      margin-left: 4px;
-    }
-
-    /* Core Version Badge */
-    .core-version-badge {
-      font-size: 9px;
-      font-family: 'SF Mono', Monaco, monospace;
-      color: var(--text-secondary);
-      opacity: 0.5;
-      text-align: center;
-      margin-top: 4px;
-    }
-
-    /* === CLEAN SERVER CARD === */
-    .server-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 12px;
-      cursor: pointer;
-      position: relative;
-      transition: all 0.25s ease;
-    }
-    .server-card:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-    }
-    body.dark-mode .server-card:hover {
-      box-shadow: 0 4px 16px rgba(255,255,255,0.03);
-    }
-    .server-card.active {
-      border-color: var(--text-primary);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-    body.dark-mode .server-card.active {
-      border-color: #ffffff;
-      box-shadow: 0 4px 12px rgba(255,255,255,0.06);
-    }
-
-    /* Card Top Row */
-    .card-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-    .server-id {
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--text-secondary);
-      background: var(--bg-secondary);
-      padding: 3px 8px;
-      border-radius: 4px;
-      letter-spacing: 0.5px;
-    }
-    .server-ping {
-      font-size: 13px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .ping-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--text-secondary);
-    }
-    .ping-dot.online { background: var(--success); }
-    .ping-dot.checking { background: var(--warning); animation: blink 1s infinite; }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
-    /* Server Name */
-    .server-name-main {
-      font-size: var(--font-base);
-      font-weight: 700;
-      margin-bottom: 4px;
-      line-height: 1.3;
-    }
-    .server-name-main .tag {
-      display: inline-block;
-      font-size: 9px;
-      font-weight: 800;
-      text-transform: uppercase;
-      padding: 2px 6px;
-      border-radius: 3px;
-      margin-left: 6px;
-      vertical-align: middle;
-      letter-spacing: 0.5px;
-    }
-    .tag-vless { background: #dbeafe; color: #1e40af; }
-    body.dark-mode .tag-vless { background: #1e3a5f; color: #93c5fd; }
-    .tag-trojan { background: #fce7f3; color: #9d174d; }
-    body.dark-mode .tag-trojan { background: #5c1a3d; color: #f9a8d4; }
-
-    /* Server Meta */
-    .server-meta {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: var(--font-subtitle);
-      color: var(--text-secondary);
-      margin-bottom: 14px;
-    }
-    .server-meta i { font-size: 11px; }
-
-    /* Single Action Button */
-    .card-action {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
-      background: var(--bg-secondary);
-      color: var(--text-primary);
-      font-size: var(--font-label);
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: all 0.2s;
-      letter-spacing: 0.3px;
-    }
-    .card-action:hover { opacity: 0.85; }
-    .card-action.selected {
-      background: var(--button-bg);
-      color: var(--button-text);
-      border-color: var(--button-bg);
-    }
-    .card-action.selected i { color: var(--success); }
-
-    /* Settings */
-    .settings-group {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 14px;
-    }
-    .settings-item {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border-color);
-    }
-    .settings-item:last-child { border-bottom: none; padding-bottom: 0; }
-    .settings-item:first-child { padding-top: 0; }
-    .settings-label { font-size: var(--font-base); font-weight: 600; }
-    .btn-group { display: flex; gap: 6px; }
-
-    /* Contact */
-    .contact-item {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 14px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      color: inherit;
-      transition: all 0.2s;
-    }
-    .contact-item:hover { background: var(--bg-secondary); }
-    .contact-icon {
-      width: 36px;
-      height: 36px;
-      background: var(--bg-secondary);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-primary);
-      font-size: 16px;
-      flex-shrink: 0;
-    }
-    .contact-info { flex: 1; }
-    .contact-label { font-size: 10px; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-    .contact-value { font-size: var(--font-base); font-weight: 600; color: var(--text-primary); margin-top: 2px; }
-
-    footer {
-      text-align: center;
-      padding: 20px 16px;
-      color: var(--text-secondary);
-      font-size: var(--font-label);
-      border-top: 1px solid var(--border-color);
-      margin-top: 20px;
-    }
+    body.size-small { --font-title: 22px; --font-subtitle: 11px; --font-base: 12px; --font-label: 10px; }
+    body.size-medium { --font-title: 26px; --font-subtitle: 13px; --font-base: 14px; --font-label: 12px; }
+    body.size-large { --font-title: 30px; --font-subtitle: 15px; --font-base: 17px; --font-label: 14px; }
+    body { background: var(--bg-primary); color: var(--text-primary); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; font-size: var(--font-base); transition: background-color 0.2s ease, color 0.2s ease; -webkit-tap-highlight-color: transparent; }
   </style>
 </head>
 <body>
-
-  <div class="sidebar" id="sidebar">
-    <div class="sidebar-header" data-i18n="sidebarHeader">Galaxy Tunnel</div>
-    <div onclick="switchPage('servers'); closeSidebar()" class="sidebar-item active" id="nav-servers">
-      <i class="fas fa-server"></i>
-      <span data-i18n="navServers">ဆာဗာမa��ား</span>
-    </div>
-    <div onclick="switchPage('settings'); closeSidebar()" class="sidebar-item" id="nav-settings">
-      <i class="fas fa-cog"></i>
-      <span data-i18n="navSettings">Settings</span>
-    </div>
-    <div onclick="switchPage('contact'); closeSidebar()" class="sidebar-item" id="nav-contact">
-      <i class="fas fa-info-circle"></i>
-      <span data-i18n="navContact">ဆက်သွယ်ရန်</span>
-    </div>
+  <script>
+    const i18n = {
+      my: { navServers: "ဆာဗာများ", navSettings: "Settings", navContact: "ဆက်သွယ်ရန်", serversTitle: "Galaxy Tunnel", serversSubtitle: "Secure. Fast. Limitless.", selectedServer: "ရွေးချယ်ထားသော ဆာဗာ", duration: "အသုံးပြုချိန်", selectServerLabel: "ဆာဗာရွေးချယ်ပါ", checking: "စစ်ဆေးနေသည်...", selectNodeBtn: "ရွေးမည်", selectedLabel: "ရွေးပြီး" },
+      en: { navServers: "Servers", navSettings: "Settings", navContact: "Contact", serversTitle: "Galaxy Tunnel", serversSubtitle: "Secure. Fast. Limitless.", selectedServer: "Selected Server", duration: "Duration", selectServerLabel: "Select Server", checking: "Checking...", selectNodeBtn: "Select", selectedLabel: "Selected" }
+    };
+    let currentLang = localStorage.getItem('lang') || 'my', selectedServerIndex = 0, vpnConnectState = 'disconnected';
+    const servers = [
+      { id: 1, name: "SG-01 🌐", protocol: "VLESS", location: "X CDN", ping: null, config: "vless://26fe5cdd-e772-4238-8adc-9bf53d4781fa@www.x.com:443?path=%2F&security=tls&encryption=none&insecure=0&host=coca.nobless.workers.dev&type=ws&allowInsecure=0&sni=coca.nobless.workers.dev#Galaxy-Server-%90%8F%9C%90" },
+      { id: 2, name: "TH-02 🇹🇭", protocol: "VLESS", location: "Thailand", ping: null, config: "vless://26fe5cdd-e772-4238-8adc-9bf53d4781fa@www.dtac.com:443?path=%2F&security=tls&encryption=none&insecure=0&host=coca.nobless.workers.dev&type=ws&allowInsecure=0&sni=coca.nobless.workers.dev#Galaxy-Server-%F0%9F%87%B9%F0%9F%87%AD%E2%9A%A1" },
+      { id: 3, name: "Cookie 🧇⭐", protocol: "Trojan", location: "CookieLaw CDN", ping: null, config: "trojan://3413d540-942c-4763-ad39-3854a3621a2e@cdn.cookielaw.org:443?path=%2F&security=tls&insecure=0&host=galaxy-3.z-empire.workers.dev&type=ws&allowInsecure=0&sni=galaxy-3.z-empire.workers.dev#Galaxy-Cookie%F0%9F%A7%87" },
+      { id: 4, name: "SpaceX �ꌓ", protocol: "Trojan", location: "USA/SpaceX", ping: null, config: "trojan://3413d540-942c-4763-ad39-3854a3621a2e@www.spacex.com:443?path=%2F&security=tls&insecure=0&host=galaxy-3.z-empire.workers.dev&type=ws&allowInsecure=0&sni=galaxy-3.z-empire.workers.dev#Galaxy-Server-%F0%9F%9A%80" },
+      { id: 5, name: "Copilot 👉", protocol: "VLESS", location: "Microsoft CD^", ping: null, config: "vless://8221a740-8218-4775-ab45-0bab948285ec@copilot.microsoft.com:443?path=%2F&security=tls&encryption=none&insecure=0&host=sub.galaxytunnel2026.workers.dev&type=ws&allowInsecure=0&sni=sub.galaxytunnel2026.workers.dev#Galaxy-Server%F0%9F%A5%88" },
+      { id: 6, name: "Lift ⚠", protocol: "VLESS", location: "Global", ping: null, config: "vless://8221a740-8218-4775-ab45-0bab948285ec@liftcreations.com:443?path=%2F&security=tls&encryption=none&insecure=0&host=sub.galaxytunnel2026.workers.dev&type=ws&allowInsecure=0&sni=sub.galaxytunnel2026.workers.dev#Galaxy-Server-%E2%9A%A4" },
+      { id: 7, name: "ChatGPT ♠|��", protocol: "Trojan", location: "ChatGPT CDN", ping: null, config: "trojan://18616960-5953-490c-a717-5462c9c63517@www.chatgpt.com:443?path=%2F&security=tls&insecure=0&host=galaxy-2.pages.dev&type=ws&allowInsecure=0&sni=galaxy-2.pages.dev#Galaxy-Server-%E2%9A%A4" },
+      { id: 8, name: "GX-05 🌉", protocol: "VLESS", location: "Cloudflare", ping: null, config: "vless://7777489c-9d5f-407d-81e9-3467cff92134@galaxy-5.gaxlayplanet.workers.dev:443?path=ed%3D%2F2680&security=tls&alpn=h3%2Ch2%2Chttp%2F11&host=galaxy-5.gaxlayplanet.workers.dev&fp=random&type=ws&sni=galaxy-5.gaxlayplanet.workers.dev#Galaxy-Tunnel" },
+      { id: 9, name: "GT-01 🌉", protocol: "VLESS", location: "Cloudflare", ping: null, config: "vless://8221a740-8218-4775-ab45-0bab948285ec@sub.galaxytunnel2026.workers.dev:443?security=tls&encryption=none&host=sub.galaxytunnel2026.workers.dev&type=ws&sni=sub.galaxytunnel2026.workers.dev#Galaxy-Tunnel" },
+      { id: 10, name: "Nobles 🌉", protocol: "VLESS", location: "Cloudflare", ping: null, config: "vless://26fe5cdd-e772-4238-8adc-9bf53d4781fa@coca.nobless.workers.dev:443?path=%2F&security=tls&encryption=none&host=coca.nobless.workers.dev&type=ws&sni=coca.nobless.workers.dev#Galaxy-Tunnel" },
+      { id: 11, name: "Clone 🍡", protocol: "Trojan", location: "Cloudflare", ping: null, config: "trojan://5a733fcb-f724-45d5-9f6f-9cd96d812409@clone.yatokami.workers.dev:443?path=%2F&security=tls&alpn=h3%2Ch2%2Chttp%2F1.1&host=clone.yatokami.workers.dev&fp=chrome&type=ws&sni=clone.yatokami.workers.dev#clone" },
+      { id: 12, name: "Pages 🌉", protocol: "Trojan", location: "Global", ping: null, config: "trojan://18616960-5953-490c-a717-5462c9c63517@galaxy-2.pages.dev:443?path=%2F&security=tls&host=galaxy-2.pages.dev&fp=random&type=ws&sni=galaxy-2.pages.dev#Galaxy-Tunnel%E2%9A%A4" },
+      { id: 13, name: "Empire 🇿🌉", protocol: "Trojan", location: "Cloudflare", ping: null, config: "trojan://3413d540-942c-4763-ad39-3854a3621a2e@galaxy-3.z-empire.workers.dev:443?path=%2F&security=tls&alpn=h3&host=galaxy-3.z-empire.workers.dev&type=ws&sni=galaxy-3.z-empire.workers.dev#Galaxy-Tunnel%2FTrojan%F0%9F%86%99" }
+    ];
+    const hasNativeBridge = typeof VpnBridge !== 'undefined';
+    function toggleVPNConnection() {
+      if (!hasNativeBridge) { simulatedToggle(); return; }
+      if (vpnConnectState === 'disconnected') { const s = servers[selectedServerIndex]; setVpnUIState('connecting'); VpnBridge.connect(s.config, s.name, selectedServerIndex); }
+      else { VpnBridge.disconnect(); }
+    }
+    function simulatedToggle() {
+      if (vpnConnectState === 'disconnected') { setVpnUIState('connecting'); setTimeout(() => { setVpnUIState('connected'); startSimStats(); }, 1500); }
+      else { setVpnUIState('disconnected'); stopSimStats(); }
+    }
+    let simT; function startSimStats() { simT = setInterval(() => { document.getElementById('hud-timer').innerText = '00:01:00'; document.getElementById('hud-dl').innerText = (Math.random()*8+14).toFixed(1)+' MB/s'; document.getElementById('hud-ul').innerText = (Math.random()*3+3).toFixed(1)+' MB/s'; }, 1000); }
+    function stopSimStats() { if(simT) clearInterval(simT); document.getElementById('hud-timer').innerText='00:00:00'; document.getElementById('hud-dl').innerText='0.0 MB/s'; document.getElementById('hud-ul').innerText='0.0 MB/s'; }
+    function onVpnStatus(s) { vpnConnectState=s.toLowerCase(); setVpnUIState(s); if(s==='CONNECTED'){document.getElementById('hud-metrics').classList.remove('hidden');if(hasNativeBridge)VpnBridge.checkConnectedDelay();}else if(s==='DISCONNECTED'){document.getElementById('hud-metrics').classList.add('hidden');stopSimStats();} }
+    function onVpnStats(d,ul,dl){ if(vpnConnectState!=='connected')return; document.getElementById('hud-timer').innerText=d||'00:00:00'; document.getElementById('hud-dl').innerText=dl||'0 B/s'; document.getElementById('hud-ul').innerText=ul||'0 B/s'; }
+    function onServerDelay(i,ms){ if(i>=0&&i<servers.length){servers[i].ping=ms>0?ms:null;renderServers();} }
+    function onConnectedDelay(ms){ if(ms>0) document.getElementById('hub-ping').innerText=ms+' ms'; }
+    function onCoreVersion(v){ document.getElementById('core-version-text').innerText='Xray Core '+v; }
+    function setVpnUIState(s){ var b=document.getElementById('vpn-main-button'),i=document.getElementById('vpn-main-icon'),l=document.getElementById('vpn-main-status-label'),p=document.getElementById('vpn-pulse-ring'); b.className='vpn-btn'; p.style.display='none';
+      if(s==='CONNECTED'||s==='connected'){b.classList.add('connected');i.className='fas fa-shield-alt';l.innerText='CONNECTED';p.style.display='block';}
+      else if(s==='CONNECTING'||s==='connecting'){b.classList.add('connecting');i.className='fas fa-sync-alt fa-spin';l.innerText='CONNECTING...';}
+      else{i.className='fas fa-power-off';l.innerText='DISCONNECTED';} }
+    function updateDashboard(){ var s=servers[selectedServerIndex]; document.getElementById('hub-server-name').innerText=s.name+' · '+s.protocol; document.getElementById('hub-server-desc').innerText=s.location; }
+    function useNode(idx){ selectedServerIndex=idx; updateDashboard(); renderServers(); if(hasNativeBridge&&servers[idx].ping===null){servers[idx].ping=-1;renderServers();VpnBridge.checkServerDelay(servers[idx].config,idx);} }
+    function renderServers(){ var c=document.getElementById('servers-container'); if(!c)return;
+      c.innerHTML=servers.map(function(s,idx){var a=idx===selectedServerIndex,tc=s.protocol==='VLESS'?'tag-vless':'tag-trojan',ph='<span class="ping-dot"></span><span>-- ms</span>';if(s.ping===-1)ph='<span class="ping-dot checking"></span><span>'+i18n[currentLang].checking+'</span>';else if(s.ping!==null&&s.ping>0)ph='<span class="ping-dot online"></span><span>'+s.ping+' ms</span>';
+      return '<div class="server-card'+(a?' active':'')+'" onclick="useNode('+idx+')"><div class="card-top"><span class="server-id">'+s.name+'</span><div class="server-ping">'+ph+'</div></div><div class="server-name-main">'+s.location+'<span class="tag '+tc+'">'+s.protocol+'</span></div><div class="server-meta"><span><i class="fas fa-globe-asia"></i> '+s.location+'</span></div><button class="card-action'+(a?' selected':'')+'" onclick="event.stopPropagation();useNode('+idx+')"><i class="fas '+(a?'fa-check':'fa-circle')+'"></i><span>'+(a?i18n[currentLang].selectedLabel:i18n[currentLang].selectNodeBtn)+'</span></button></div>';}).join(''); }
+    function setTheme(t){ document.querySelectorAll('#theme-light-btn,#theme-dark-btn').forEach(function(b){b.classList.remove('active');}); if(t==='dark'){document.body.classList.add('dark-mode');document.getElementById('theme-dark-btn').classList.add('active');}else{document.body.classList.remove('dark-mode');document.getElementById('theme-light-btn').classList.add('active');}localStorage.setItem('theme',t); }
+    function setFontSize(s){ document.body.classList.remove('size-small','size-medium','size-large');document.querySelectorAll('#size-sm-btn,#size-md-btn,#size-lg-btn').forEach(function(b){b.classList.remove('active');});document.body.classList.add('size-'+s);var m={small:'size-sm-btn',medium:'size-md-btn',large:'size-lg-btn'};document.getElementById(m[s]).classList.add('active');localStorage.setItem('fontSize',s); }
+    function setLanguage(l){ currentLang=l;localStorage.setItem('lang',l);document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.remove('active');});document.getElementById('btn-'+l).classList.add('active');document.querySelectorAll('[data-i18n]').forEach(function(e){var k=e.getAttribute('data-i18n');if(i18n[l][k])e.textContent=i18n[l][k];});renderServers();updateDashboard(); }
+    window.addEventListener('load',function(){ setTheme(localStorage.getItem('theme')||'dark'); setFontSize(localStorage.getItem('fontSize')||'medium'); setLanguage(currentLang); renderServers(); });
+  </script>
+  <div class="sidebar" id="sidebar"><div class="sidebar-header">Galaxy Tunnel</div>
+    <div onclick="switchPage('servers');closeSidebar()" class="sidebar-item active" id="nav-servers"><i class="fas fa-server"></i><span data-i18n="navServers">ဆာဗာများ</span></div>
+    <div onclick="switchPage('settings');closeSidebar()" class="sidebar-item" id="nav-settings"><i class="fas fa-cog"></i><span data-i18n="navSettings">Settings</span></div>
+    <div onclick="switchPage('contact');closeSidebar()" class="sidebar-item" id="nav-contact"><i class="fas fa-info-circle"></i><span data-i18n="navContact">ဆက်သွယ်ရန်</span></div>
   </div>
-
   <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
-
-  <header>
-    <div class="flex items-center gap-3">
-      <button class="text-xl" onclick="toggleSidebar()">
-        <i class="fas fa-bars"></i>
-      </button>
-      <div class="header-title" data-i18n="headerTitle">Galaxy Tunnel</div>
-    </div>
-    <div class="flex gap-2">
-      <button class="lang-btn" id="btn-my" onclick="setLanguage('my')">MY</button>
-      <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button>
-    </div>
-  </header>
-
+  <header><div class="flex items-center gap-3"><button class="text-xl" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button><div class="header-title">Galaxy Tunnel</div></div><div class="flex gap-2"><button class="lang-btn" id="btn-my" onclick="setLanguage('my')">MY</button><button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button></div></header>
   <main>
-    <!-- SERVERS PAGE -->
     <div class="page-content active" id="page-servers">
-      <div class="page-header mt-2 mb-4">
-        <div class="page-title" data-i18n="serversTitle">Galaxy Tunnel</div>
-        <div class="page-subtitle" data-i18n="serversSubtitle">Secure. Fast. Limitless.</div>
-        <div class="core-version-badge" id="core-version-text">Xray Core</div>
+      <div class="page-header mt-2 mb-4"><div class="page-title" data-i18n="serversTitle">Galaxy Tunnel</div><div class="page-subtitle" data-i18n="serversSubtitle">Secure. Fast. Limitless.</div><div class="core-version-badge" id="core-version-text">Xray Core</div></div>
+      <div class="conn-hub-panel"><div class="text-[10px] uppercase font-extrabold tracking-widest text-stone-400 dark:text-stone-500 mb-4">VPN Connection</div>
+        <div class="vpn-power-container"><div id="vpn-pulse-ring" class="vpn-outer-pulse"></div><button id="vpn-main-button" class="vpn-btn" onclick="toggleVPNConnection()"><i id="vpn-main-icon" class="fas fa-power-off"></i><span id="vpn-main-status-label" class="vpn-status-txt">DISCONNECTED</span></button></div>
+        <div class="w-full text-center border-t border-stone-200 dark:border-zinc-800 pt-4 mt-2"><div class="text-[9px] text-stone-400 dark:text-stone-500 uppercase font-semibold tracking-wider" data-i18n="selectedServer">Selected Server</div><div id="hub-server-name" class="font-bold text-stone-900 dark:text-white mt-1 text-sm">SG-01 · VLESS</div><div id="hub-server-desc" class="text-[11px] text-stone-500 dark:text-stone-400">Singapore</div></div>
+        <div id="hud-metrics" class="hidden"><div><div class="metric-label" data-i18n="duration">Duration</div><div id="hud-timer" class="metric-value">00:00:00</div></div><div><div class="metric-label text-emerald-500"><i class="fas fa-download mr-1"></i>DL</div><div id="hud-dl" class="metric-value">0.0 MB/s</div></div><div><div class="metric-label text-cyan-500"><i class="fas fa-upload mr-1"></i>UL</div><div id="hud-ul" class="metric-value">0.0 MB/s</div></div></div>
       </div>
-
-      <!-- VPN Dashboard -->
-      <div class="conn-hub-panel">
-        <div class="text-[10px] uppercase font-extrabold tracking-widest text-stone-400 dark:text-stone-500 mb-4">VPN Connection</div>
-
-        <div class="vpn-power-container">
-          <div id="vpn-pulse-ring" class="vpn-outer-pulse"></div>
-          <button id="vpn-main-button" class="vpn-btn" onclick="toggleVPNConnection()">
-            <i id="vpn-main-icon" class="fas fa-power-off"></i>
-            <span id="vpn-main-status-label" class="vpn-status-txt">DISCONNECTED</span>
-          </button>
-        </div>
-
-        <div class="w-full text-center border-t border-stone-200 dark:border-zinc-800 pt-4 mt-2">
-          <div class="text-[9px] text-stone-400 dark:text-stone-500 uppercase font-semibold tracking-wider" data-i18n="selectedServer">Selected Server</div>
-          <div id="hub-server-name" class="font-bold text-stone-900 dark:text-white mt-1 text-sm">SG-01 · VLESS</div>
-          <div id="hub-server-desc" class="text-[11px] text-stone-500 dark:text-stone-400">Singapore</div>
-        </div>
-
-        <div id="hud-metrics" class="hidden">
-          <div>
-            <div class="metric-label" data-i18n="duration">Duration</div>
-            <div id="hud-timer" class="metric-value">00:00:00</div>
-          </div>
-          <div>
-            <div class="metric-label text-emerald-500"><i class="fas fa-download mr-1"></i>DL</div>
-            <div id="hud-dl" class="metric-value">0.0 MB/s</div>
-          </div>
-          <div>
-            <div class="metric-label text-cyan-500"><i class="fas fa-upload mr-1"></i>UL</div>
-            <div id="hud-ul" class="metric-value">0.0 MB/s</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section-label" data-i18n="selectServerLabel">Select Server</div>
-      <div id="servers-container"></div>
+      <div class="section-label" data-i18n="selectServerLabel">Select Server</div><div id="servers-container"></div>
     </div>
-
-    <!-- SETTINGS PAGE -->
-    <div class="page-content" id="page-settings">
-      <div class="page-header">
-        <div class="page-title" data-i18n="settingsTitle">Settings</div>
-        <div class="page-subtitle" data-i18n="settingsSubtitle">Customize your experience</div>
-      </div>
-
-      <div class="settings-group">
-        <div class="settings-item">
-          <div class="settings-label">
-            <i class="fas fa-palette mr-2"></i><span data-i18n="themeLabel">Theme</span>
-          </div>
-          <div class="btn-group">
-            <button class="opt-btn" id="theme-light-btn" onclick="setTheme('light')">
-              <i class="fas fa-sun mr-1"></i> <span data-i18n="lightMode">Light</span>
-            </button>
-            <button class="opt-btn" id="theme-dark-btn" onclick="setTheme('dark')">
-              <i class="fas fa-moon mr-1"></i> <span data-i18n="darkMode">Dark</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="settings-item">
-          <div class="settings-label">
-            <i class="fas fa-text-height mr-2"></i><span data-i18n="textSizeLabel">Text Size</span>
-          </div>
-          <div class="btn-group">
-            <button class="opt-btn" id="size-sm-btn" onclick="setFontSize('small')">
-              <span data-i18n="textSmall">Small</span>
-            </button>
-            <button class="opt-btn" id="size-md-btn" onclick="setFontSize('medium')">
-              <span data-i18n="textMedium">Medium</span>
-            </button>
-            <button class="opt-btn" id="size-lg-btn" onclick="setFontSize('large')">
-              <span data-i18n="textLarge">Large</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CONTACT PAGE -->
-    <div class="page-content" id="page-contact">
-      <div class="page-header">
-        <div class="page-title" data-i18n="contactTitle">ဆ၀်သွယ်ရန်</div>
-        <div class="page-subtitle" data-i18n="contactSubtitle">Reach out anytime</div>
-      </div>
-
-      <a href="https://t.me/Swnt7771" target="_blank" class="contact-item">
-        <div class="contact-icon"><i class="fab fa-telegram"></i></div>
-        <div class="contact-info">
-          <div class="contact-label">Telegram</div>
-          <div class="contact-value">@Swnt7771</div>
-        </div>
-      </a>
-
-      <a href="https://www.facebook.com/share/14bd1ThErYb/" target="_blank" class="contact-item">
-        <div class="contact-icon"><i class="fab fa-facebook"></i></div>
-        <div class="contact-info">
-          <div class="contact-label">Facebook</div>
-          <div class="contact-value">Sal W Tun</div>
-        </div>
-      </a>
-
-      <a href="tel:09674688300" class="contact-item">
-        <div class="contact-icon"><i class="fas fa-phone"></i></div>
-        <div class="contact-info">
-          <div class="contact-label" data-i18n="phoneLabel">Phone</div>
-          <div class="contact-value">09674688300</div>
-        </div>
-      </a>
-
-      <div class="contact-item">
-        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-        <div class="contact-info">
-          <div class="contact-label" data-i18n="addressLabel">Address</div>
-          <div class="contact-value" data-i18n="addressValue">Kayin State, Myawaddy</div>
-        </div>
-      </div>
+    <div class="page-content" id="page-settings"><div class="page-header"><div class="page-title" data-i18n="settingsTitle">Settings</div><div class="page-subtitle" data-i18n="settingsSubtitle">Customize your experience</div></div><div class="settings-group"><div class="settings-item"><div class="settings-label"><i class="fas fa-palette mr-2"></i><span data-i18n="themeLabel">Theme</span></div><div class="btn-group"><button class="opt-btn" id="theme-light-btn" onclick="setTheme('light')"><i class="fas fa-sun mr-1"></i><span data-i18n="lightMode">Light</span></button><button class="opt-btn" id="theme-dark-btn" onclick="setTheme('dark')"><i class="fas fa-moon mr-1"></i><span data-i18n="darkMode">Dark</span></button></div></div><div class="settings-item"><div class="settings-label"><i class="fas fa-text-height mr-2"></i><span data-i18n="textSizeLabel">Text Size</span></div><div class="btn-group"><button class="opt-btn" id="size-sm-btn" onclick="setFontSize('small')"><span data-i18n="textSmall">Small</span></button><button class="opt-btn" id="size-md-btn" onclick="setFontSize('medium')"><span data-i18n="textMedium">Medium</span></button><button class="opt-btn" id="size-lg-btn" onclick="setFontSize('large')"><span data-i18n="textLarge">Large</span></button></div></div></div></div>
+    <div class="page-content" id="page-contact"><div class="page-header"><div class="page-title" data-i18n="contactTitle">ဆက်သွယ်ရန်</div><div class="page-subtitle" data-i18n="contactSubtitle">Reach out anytime</div></div>
+      <a href="https://t.me/Swnt7771" target="_blank" class="contact-item"><div class="contact-icon"><i class="fab fa-telegram"></i></div><div class="contact-info"><div class="contact-label">Telegram</div><div class="contact-value">@Swnt7771</div></div></a>
+      <a href="https://www.facebook.com/share/14bd1ThErYb/" target="_blank" class="contact-item"><div class="contact-icon"><i class="fab fa-facebook"></i></div><div class="contact-info"><div class="contact-label">Facebook</div><div class="contact-value">Sal W Tun</div></div></a>
+      <a href="tel:09674688300" class="contact-item"><div class="contact-icon"><i class="fas fa-phone"></i></div><div class="contact-info"><div class="contact-label" data-i18n="phoneLabel">Phone</div><div class="contact-value">09674688300</div></div></a>
+      <div class="contact-item"><div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div><div class="contact-info"><div class="contact-label" data-i18n="addressLabel">Address</div><div class="contact-value" data-i18n="addressValue">Kayin State, Myawaddy</div></div></div>
     </div>
   </main>
-
-  <footer>
-    <p>© 2026 Galaxy Tunnel Team. All rights reserved.</p>
-  </footer>
-
-  <script>
-    // ═════════════════════════════════════════════════════════════════\n    //  i18n Translations\n    // ═════════════════════════════════════════════════════════════════\n    const i18n = {\n      my: {\n        sidebarHeader: "Galaxy Tunnel",\n        navServers: "ဆာဗာများ",\n        navSettings: "Settings",\n        navContact: "ဆက်သွယ်ရန်",\n        headerTitle: "Galaxy Tunnel",\n        serversTitle: "Galaxy Tunnel",\n        serversSubtitle: "Secure. Fast. Limitless.",\n        selectedServer: "ရွေးချယ်ထားသော ဆာဗာ",\n        duration: "အသုံးပြုချိန်",\n        selectServerLabel: "ဆာဗာရိေးချယ်ပါ",\n        settingsTitle: "Settings",\n        settingsSubtitle: "စ္ယျါရ်ဍ ယပးခဒယးပ",\n        themeLabel: "Theme",\n        lightMode: "ခဵဒအးသ",\n        darkMode: "ခါသးဵသု",\n        textSizeLabel: "ဆာဗာ္ျ ���ျဠျအျာချ",\n        textSmall: "ချနာ",\n        textMedium: "ချယိဍ",\n        textLarge: "ချါ္သ",\n        contactTitle: "ဆက်သွယ်ရန်",\n        contactSubtitle: "ၗလျပြုချဴိသ့းဂ ဆက်သွယ်ရန်",\n        phoneLabel: "ယိယား",\n        addressLabel: "ယနယ၇ဃ",\n        addressValue: "ါဵဤးယပှဘှူ, ဒပသလညဒ",\n        checking: "စစ်ဆေးနေသည်...",\n        offline: "ခပသညအ်တပာ",\n        selectNodeBtn: "ရိေးရညြ",\n        selectedLabel: "ရွေးပြီး"\n      },\n      en: {\n        sidebarHeader: "Galaxy Tunnel",\n        navServers: "Servers",\n        navSettings: "Settings",\n        navContact: "Contact",\n        headerTitle: "Galaxy Tunnel",\n        serversTitle: "Galaxy Tunnel",\n        serversSubtitle: "Secure. Fast. Limitless.",\n        selectedServer: "Selected Server",\n        duration: "Duration",\n        selectServerLabel: "Select Server",\n        settingsTitle: "Settings",\n        settingsSubtitle: "Customize your experience",\n        themeLabel: "Theme",\n        lightMode: "Light",\n        darkMode: "Dark",\n        textSizeLabel: "Text Size",\n        textSmall: "Small",\n        textMedium: "Medium",\n        textLarge: "Large",\n        contactTitle: "Contact Us",\n        contactSubtitle: "Reach out anytime",\n        phoneLabel: "Phone",\n        addressLabel: "Address",\n        addressValue: "Kayin State, Myawaddy",\n        checking: "Checking...",\n        offline: "Offline",\n        selectNodeBtn: "Select",\n        selectedLabel: "Selected"\n      }\n    };\n\n    let currentLang = localStorage.getItem('lang') || 'my';\n    let selectedServerIndex = 0;\n    let vpnConnectState = 'disconnected';\n\n    // ═════════════════════════════════════════════════════════════════\n    //  Server List — REAL configs from Galaxy-Tunnel/ONE-AGENT\n    // ════════════════════════════════════════════════════════════════════════\n    const servers = [\n      { id: 1, name: "Server-📌", protocol: "VLESS", location: "X CDN", ping: null, config: "vless://26fe5cdd-e772-4238-8adc-9bf53d4781fa@www.x.com:443?path=%2F&security=tls&encryption=none&insecure=0&host=coca.nobless.workers.dev&type=ws&allowInsecure=0&sni=coca.nobless.workers.dev#Galaxy-Server-%F0%9F%8C%90" },
-      { id: 2, name: "Server-🇹🇭⚡", protocol: "VLESS", location: "Thailand", ping: null, config: "vless://26fe5cdd-e772-4238-8adc-9bf53d4781fa@www.dtac.com:443?path=%2F&security=tls&encryption=none&insecure=0&host=coca.nobless.workers.dev&type=ws&allowInsecure=0&sni=coca.nobless.workers.dev#Galaxy-Server-%F0%9F%87%B9%F0%9F%87%AD%E2%9A%A1" },
-      { id: 3, name: "Cookie🧇", protocol: "TROJAN", location: "CookieLaw CDN", ping: null, config: "trojan://3413d540-942c-4763-ad39-3854a3621a2eBcdn.cookielaw.org:443?path=%2F&security=tbs&insecure=0&host=galaxy-3.z-empire.workers.dev&type=ws&allowInsecure=0&sni=galaxy-3.z-empire.workers.dev#Galaxy-Cookie%F0%9F%A7%87" },
-      { id: 4, name: "Server-🚀", protocol: "TROJAN", location: "USA / SpaceX", ping: null, config: "trojan://3413d540-942c-4763-ad39-3854a3621a2eBwww.spacex.com:443?path=%2F&security=tbs&insecure=0&host=galaxy-3.z-empire.workers.dev&type=ws&allowInsecure=0&sni=galaxy-3.z-empire.workers.dev#Galaxy-Server-%F0%9F%9A%80" },
-      { id: 5, name: "Server🥈", protocol: "VLESS", location: "Microsoft CDN", ping: null, config: "vless://8221a740-8218-4775-ab45-0bab948285ec@copilot.microsoft.com:443?path=%2F&security=tbs&encryption=none&insecure=0&host=sub.galaxytunnel2026.workers.dev&type=ws&allowInsecure=0&sni=sub.galaxytunnel2026.workers.dev#Galaxy-Server%F0%9F%A5%88" },
-      { id: 6, name: "Server-⚡", protocol: "VLESS", location: "Global", ping: null, config: "vless://8221a740-8218-4775-ab45-0bab948285ec@liftcreations.com:443?path=%2F&security=tls&encryption=none&insecure=0&host=sub.galaxytunnel2026.workers.dev&type=ws&allowInsecure=0&sni=sub.galaxytunnel2026.workers.dev#Galaxy-Server-%E2%9A%A1" },
-      { id: 7, name: "Server-⛡", protocol: "TROJAN", location: "ChatGPT CDN", ping: null, config: "trojan://18616960-5953-490c-a717-5462c9c63517@www.chatgpt.com:443?path=%2F&security=tls&insecure=0&host=galaxy-2.pages.dev&type=ws&allowInsecure=0&sni=galaxy-2.pages.dev#Galaxy-Server-%E2%9A%A1" },
-      { id: 8, name: "Tunnel", protocol: "VLESS", location: "Cloudflare Workers", ping: null, config: "vless://7777489c-9d5f-407d-81e9-3467cff92134@galaxy-5.gaxlayplanet.workers.dev:443?path=ed%3D%2F2680&security=tls&alpn=h3%2Ch2%2Chttp%2F1.1&encryption=none&host=galaxy-5.gaxlayplanet.workers.dev&fp=random&type=ws&sni=galaxy-5.gaxlayplanet.workers.dev#Galaxy-Tunnel" },
-      { id: 9, name: "Tunnel", protocol: "VLESS", location: "Cloudflare Workers", ping: null, config: "vless://8221a740-8218-4775-ab45-0bab948285ec@sub.galaxytunnel2026.workers.dev:443?security=tls&encryption=none&host=sub.galaxytunnel2026.workers.dev&type=ws&sni=sub.galaxytunnel2026.workers.dev#Galaxy-Tunnel" },
-      { id: 10, name: "Tunnel", protocol: "VLESS", location: "Cloudflare Workers", ping: null, config: "vless://26fe5cdd-e772-4238-8adc-9bf53d4781fa@coca.nobless.workers.dev:443?path=%2F&security=tbs&encryption=none&host=coca.nobless.workers.dev&type=ws&sni=coca.nobless.workers.dev#Galaxy-Tunnel" },
-      { id: 11, name: "clone", protocol: "TROJAN", location: "Cloudflare Workers", ping: null, config: "trojan://5a733fcb-f724-45d5-9f6f-9cd96d812409@clone.yatokami.workers.dev:443?path=%2F&security=tls&alpn=h3%2Ch2%2Chttp%2F1.1&host=clone.yatokami.workers.dev&fp=chrome&type=ws&sni=clone.yatokami.workers.dev#clone" },
-      { id: 12, name: "Tunnel♡", protocol: "TROJAN", location: "Global", ping: null, config: "trojan://18616960-5953-490c-a717-5462c9c63517@galaxy-2.pages.dev:443?path=%2F&security=tls&host=galaxy-2.pages.dev&fp=random&type=ws&sni=galaxy-2.pages.dev#Galaxy-Tunnel%E2%9A%A1" },
-      { id: 13, name: "Tunnel/Trojan🆹", protocol: "TROJAN", location: "Cloudflare Workers", ping: null, config: "trojan://3413d540-942c-4763-ad39-3854a3621a2e@galaxy-3.z-empire.workers.dev:443?path=%2F&security=tbs&alpn=h3&host=galaxy-3.z-empire.workers.dev&type=ws&sni=galaxy-3.z-empire.workers.dev#Galaxy-Tunnel%2FTrojan%F0%9F%86%99" }
-    ];
-
-    // ═════════════════════════════════════════════════════════════════\n    //  Native Bridge Detection\n    // ═════════════════════════════════════════════════════════════════\n    const hasNativeBridge = typeof VpnBridge !== 'undefined';\n\n    // ════════════════════════════════════════════════════════════════════════\n    //  VPN Core Logic (Real V2Ray via VpnBridge)\n    // ════════════════════════════════════════════════════════════════════════\n    function toggleVPNConnection() {
-      if (!hasNativeBridge) {
-        // Fallback: simulated connection for browser preview
-        simulatedToggle();
-        return;
-      }
-
-      if (vpnConnectState === 'disconnected') {
-        const srv = servers[selectedServerIndex];
-        setVpnUIState('connecting');
-        VpnBridge.connect(srv.config, srv.name, selectedServerIndex);
-      } else {
-        VpaBridge.disconnect();
-      }
-    }
-
-    // Browser-only simulation (when VpnBridge not available)
-    function simulatedToggle() {
-      if (vpnConnectState === 'disconnected') {
-        setVpnUIState('connecting');
-        setTimeout(() => {
-          setVpnUIState('connected');
-          document.getElementById('hud-metrics').classList.remove('hidden');
-          startSimulatedStats();
-        }, 1500);
-      } else {
-        setVpnUIState('disconnected');
-        document.getElementById('hud-metrics').classList.add('hidden');
-        stopSimulatedStats();
-      }
-    }
-
-    let simTimer = null;
-    let simSeconds = 0;
-    function startSimulatedStats() {
-      if (simTimer) clearInterval(simTimer);
-      simSeconds = 0;
-      simTimer = setInterval(() => {
-        simSeconds++;
-        const h = Math.floor(simSeconds / 3600).toString().padStart(2, '0');
-        const m = Math.floor((simSeconds % 3600) / 60).toString().padStart(2, '0');
-        const s = (simSeconds % 60).toString().padStart(2, '0');
-        document.getElementById('hud-timer').innerText = h + ':' + m + ':' + s;
-        document.getElementById('hud-dl').innerText = (Math.random() * 8 + 14).toFixed(1) + ' MB/s';
-        document.getElementById('hud-ul').innerText = (Math.random() * 3 + 5).toFixed(1) + ' MB/s';
-      }, 1000);
-    }
-    function stopSimulatedStats() {
-      if (simTimer) { clearInterval(simTimer); simTimer = null; }
-      document.getElementById('hud-timer').innerText = '00:00:00';
-      document.getElementById('hud-dl').innerText = '0.0 MB/s';
-      document.getElementById('hud-ul').innerText = '0.0 MB/s';
-    }
-
-    // ════════════════════════════════════════════════════════════════════════\n    //  Callbacks from Native (VpaBridge calls these via evaluateJavascript)\n    // ════════════════════════════════════════════════════════════════════════\n\n    // Called when connection state changes: "CONNECTED" | "DISCONNECTED" | "CONNECTING"\n    function onVpnStatus(status) {
-      vpnConnectState = status.toLowerCase();
-      setVpnUIState(status);
-
-      if (status === 'CONNECTED') {
-        document.getElementById('hud-metrics').classList.remove('hidden');
-        // Request connected server delay
-        if (hasNativeBridge) VpaBridge.checkConnectedDelay();
-      } else if (status === 'DISCONNECTED') {
-        document.getElementById('hud-metrics').classList.add('hidden');
-        stopSimulatedStats();
-      }
-    }
-
-    // Called with real-time stats from V2Ray service
-    function onVpnStats(duration, ulSpeed, dlSpeed, ulTraffic, dlTraffic) {
-      if (vpnConnectState !== 'connected') return;
-      document.getElementById('hud-timer').innerText = duration || '00:00:00';
-      document.getElementById('hud-dl').innerText = (dlSpeed || '0 B/s');
-      document.getElementById('hud-ul').innerText = (ulSpeed || '0 B/s');
-    }
-
-    // Called when server delay check completes
-    function onServerDelay(serverIndex, delayMs) {
-      if (serverIndex >= 0 && serverIndex < servers.length) {
-        servers[serverIndex].ping = delayMs > 0 ? delayMs : null;
-        renderServers();
-      }
-    }
-
-    // Called with connected server delay
-    function onConnectedDelay(delayMs) {
-      if (delayMs > 0 && vpnConnectState === 'connected') {
-        const pingEl = document.getElementById('ping-connected');
-        if (pingEl) pingEl.innerText = delayMs + ' ms';
-      }
-    }
-
-    // Called with Xray core version
-    function onCoreVersion(version) {
-      const el = document.getElementById('core-version-text');
-      if (el && version) el.innerText = 'Xray Core ' + version;
-    }
-
-    // ════════════════════════════════════════════════════════════════════════\n    //  UI State Management\n    // ═════════════════════════════════════════════════════════════════\n    function setVpnUIState(state) {
-      const btn = document.getElementById('vpn-main-button');
-      const icon = document.getElementById('vpn-main-icon');
-      const label = document.getElementById('vpn-main-status-label');
-      const pulse = document.getElementById('vpn-pulse-ring');
-
-      btn.className = 'vpn-btn';
-      pulse.style.display = 'none';
-
-      switch (state) {
-        case 'CONNECTED':
-        case 'connected':
-          btn.classList.add('connected');
-          icon.className = 'fas fa-shield-alt';
-          label.innerText = 'CONNECTED';
-          pulse.style.display = 'block';
-          break;
-        case 'CONNECTING':
-        case 'connecting':
-          btn.classList.add('connecting');
-          icon.className = 'fas fa-sync-alt fa-spin';
-          label.innerText = 'CONNECTING...';
-          break;
-        default:
-          icon.className = 'fas fa-power-off';
-          label.innerText = 'DISCONNECTED';
-          break;
-      }
-    }
-
-    function updateDashboardServerInfo() {
-      const s = servers[selectedServerIndex];
-      document.getElementById('hub-server-name').innerText = s.name + ' · ' + s.protocol;
-      document.getElementById('hub-server-desc').innerText = s.location;
-    }
-
-    function useNode(index) {
-      selectedServerIndex = index;
-      updateDashboardServerInfo();
-      renderServers();
-
-      // Auto-ping the selected server
-      if (hasNativeBridge && servers[index].ping === null) {
-        servers[index].ping = -1; // "checking" state
-        renderServers();
-        VpnBridge.checkServerDelay(servers[index].config, index);
-      }
-    }
-
-    // ════════════════════════════════════════════════════════════════════════\n    //  Render Server List\n    // ══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════   function renderServers() {
-      const container = document.getElementById('servers-container');
-      if (!container) return;
-      container.innerHTML = servers.map((s, idx) => {
-        const isActive = idx === selectedServerIndex;
-        const tagClass = s.protocol === 'VLESS' ? 'tag-vless' : 'tag-trojan';
-        let pingHtml;
-        if (s.ping === null) {
-          pingHtml = '<span class="ping-dot"></span><span id="ping-' + s.id + '">-- ms</span>';
-        } else if (s.ping === -1) {
-          pingHtml = '<span class="ping-dot checking"></span><span id="ping-' + s.id + '">' + i18n[currentLang].checking + '</span>';
-        } else {
-          pingHtml = '<span class="ping-dot online"></span><span id="ping-' + s.id + '">' + s.ping + ' ms</span>';
-        }
-        return '<div class="server-card' + (isActive ? ' active' : '') + '" onclick="useNode(' + idx + ')">' +
-          '<div class="card-top">' +
-            '<span class="server-id">' + s.name + '</span>' +
-            '<div class="server-ping">' + pingHtml + '</div>' +
-          '</div>' +
-          '<div class="server-name-main">' +
-            s.location +
-            '<span class="tag ' + tagClass + '">' + s.protocol + '</span>' +
-          '</div>' +
-          '<div class="server-meta">' +
-            '<span><i class="fas fa-globe-asia"></i> ' + s.location + '</span>' +
-          '</div>' +
-          '<button class="card-action' + (isActive ? ' selected' : '') + '" onclick="event.stopPropagation(); useNode(' + idx + ')">' +
-            '<i class="fas ' + (isActive ? 'fa-check' : 'fa-circle') + '"></i>' +
-            '<span>' + (isActive ? i18n[currentLang].selectedLabel : i18n[currentLang].selectNodeBtn) + '</span>' +
-          '</button>' +
-        '</div>';
-      }).join('');
-    }
-
-    // ═════════════════════════════════════════════════════════════════\n    //  Theme & Language\n    // ══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════    function loadTheme() {
-      setTheme(localStorage.getItem('theme') || 'dark');
-    }
-    function setTheme(theme) {
-      document.querySelectorAll('#theme-light-btn, #theme-dark-btn').forEach(function(b) { b.classList.remove('active'); });
-      if (theme === 'dark') {
-        document.body.classList.add('dark-mode');
-        document.getElementById('theme-dark-btn').classList.add('active');
-      } else {
-        document.body.classList.remove('dark-mode');
-        document.getElementById('theme-light-btn').classList.add('active');
-      }
-      localStorage.setItem('theme', theme);
-    }
-
-    function loadFontSize() {
-      setFontSize(localStorage.getItem('fontSize') || 'medium');
-    }
-    function setFontSize(size) {
-      document.body.classList.remove('size-small', 'size-medium', 'size-large');
-      document.querySelectorAll('#size-sm-btn, #size-md-btn, #size-lg-btn').forEach(function(b) { b.classList.remove('active'); });
-      document.body.classList.add('size-' + size);
-      if (size === 'small') document.getElementById('size-sm-btn').classList.add('active');
-      if (size === 'medium') document.getElementById('size-md-btn').classList.add('active');
-      if (size === 'large') document.getElementById('size-lg-btn').classList.add('active');
-      localStorage.setItem('fontSize', size);
-    }
-
-    function setLanguage(lang) {
-      currentLang = lang;
-      localStorage.setItem('lang', lang);
-      document.querySelectorAll('.lang-btn').forEach(function(btn) { btn.classList.remove('active'); });
-      document.getElementById('btn-' + lang).classList.add('active');
-      document.querySelectorAll('[data-i18n]').forEach(function(el) {
-        var key = el.getAttribute('data-i18n');
-        if (i18n[lang][key]) el.textContent = i18n[lang][key];
-      });
-      renderServers();
-      updateDashboardServerInfo();
-    }
-
-    function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('active');
-      document.getElementById('overlay').classList.toggle('active');
-    }
-    function closeSidebar() {
-      document.getElementById('sidebar').classList.remove('active');
-      document.getElementById('overlay').classList.remove('active');
-    }
-    function switchPage(page) {
-      document.querySelectorAll('.page-content').forEach(function(el) { el.classList.remove('active'); });
-      document.getElementById('page-' + page).classList.add('active');
-      document.querySelectorAll('.sidebar-item').forEach(function(el) { el.classList.remove('active'); });
-      document.getElementById('nav-' + page).classList.add('active');
-      if (page === 'servers') renderServers();
-    }
-
-    // ═════════════════════════════════════════════════════════════════\n    //  Init\n    // ════════════════════════════════════════════════════════════════════════\n    window.addEventListener('load', function() {
-      loadTheme();
-      loadFontSize();
-      setLanguage(currentLang);
-      renderServers();
-    });
-  </script>
+  <footer><p>© 2026 Galaxy Tunnel Team. All rights reserved.</p></footer>
 </body>
 </html>
