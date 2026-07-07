@@ -16,6 +16,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "V2ray-Android"
+rootProject.name = "Galaxy-Tunnel"
 include ':app'
 include ':v2ray'

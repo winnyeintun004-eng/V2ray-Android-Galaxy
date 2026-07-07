@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Galaxy Tunnel Client</title>
+  <link rel="icon" href="https://i.ibb.co/V0NYnWk9/1777224598110.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg-primary: #ffffff; --bg-secondary: #f5f5f5; --text-primary: #000000; --text-secondary: #666666;
+      --border-color: #e5e5e5; --card-bg: #ffffff; --header-bg: #ffffff; --button-bg: #000000;
+      --button-text: #ffffff; --sidebar-bg: #ffffff; --sidebar-border: #e5e5e5; --accent: #000000;
+      --success: #10b981; --warning: #d97706;
+      --font-title: 26px; --font-subtitle: 13px; --font-base: 14px; --font-label: 12px;
+    }
+    body.dark-mode {
+      --bg-primary: #0a0a09; --bg-secondary: #161614; --text-primary: #ffffff; --text-secondary: #a3a39e;
+      --border-color: #272724; --card-bg: #161614; --header-bg: #0a0a09; --button-bg: #ffffff;
+      --button-text: #000000; --sidebar-bg: #161614; --sidebar-border: #272724; --accent: #ffffff;
+    }
+    body.size-small { --font-title: 22px; --font-subtitle: 11px; --font-base: 12px; --font-label: 10px; }
+    body.size-medium { --font-title: 26px; --font-subtitle: 13px; --font-base: 14px; --font-label: 12px; }
+    body.size-large { --font-title: 30px; --font-subtitle: 15px; --font-base: 17px; --font-label: 14px; }
+    body { background: var(--bg-primary); color: var(--text-primary); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; font-size: var(--font-base); transition: background-color 0.2s ease, color 0.2s ease; -webkit-tap-highlight-color: transparent; }
+  </style>
+</head>
+<body>
+  <script>
+    const i18n = {
+      my: { navServers: "ဆာဗာများ", navSettings: "Settings", navContact: "ဆက်သွယ်ရန်", serversTitle: "Galaxy Tunnel", serversSubtitle: "Secure. Fast. Limitless.", selectedServer: "ရွေးချယ်ထားသော ဆာဗာ", duration: "အသုံးပြုချိန်", selectServerLabel: "ဆာဗာရွေးချယ်ပါ", checking: "စစ်ဆေးနေသည်...", selectNodeBtn: "ရွေးမည်", selectedLabel: "ရွေးပြီး" },
+      en: { navServers: "Servers", navSettings: "Settings", navContact: "Contact", serversTitle: "Galaxy Tunnel", serversSubtitle: "Secure. Fast. Limitless.", selectedServer: "Selected Server", duration: "Duration", selectServerLabel: "Select Server", checking: "Checking...", selectNodeBtn: "Select", selectedLabel: "Selected" }
+    };
+    let currentLang = localStorage.getItem('lang') || 'my', selectedServerIndex = 0, vpnConnectState = 'disconnected';
+    const servers = [
+      { id: 1, name: "SG-01", protocol: "VLESS", location: "Singapore", ping: null, config: "vless://PUT_YOUR_REAL_VLESS_URI_HERE" },
+      { id: 2, name: "US-02", protocol: "VLESS", location: "USA", ping: null, config: "vless://PUT_YOUR_REAL_VLESS_URI_HERE" },
+      { id: 3, name: "CDN-03", protocol: "VLESS", location: "Global CDN", ping: null, config: "vless://PUT_YOUR_REAL_VLESS_URI_HERE" },
+      { id: 4, name: "Coca-04", protocol: "VLESS", location: "Multi-Region", ping: null, config: "vless://PUT_YOUR_REAL_VLESS_URI_HERE" },
+      { id: 5, name: "JP-05", protocol: "Trojan", location: "Japan", ping: null, config: "trojan://PUT_YOUR_REAL_TROJAN_URI_HERE" },
+      { id: 6, name: "DE-06", protocol: "Trojan", location: "Germany", ping: null, config: "trojan://PUT_YOUR_REAL_TROJAN_URI_HERE" },
+      { id: 7, name: "UK-07", protocol: "Trojan", location: "UK", ping: null, config: "trojan://PUT_YOUR_REAL_TROJAN_URI_HERE" }
+    ];
+    const hasNativeBridge = typeof VpnBridge !== 'undefined';
+    function toggleVPNConnection() {
+      if (!hasNativeBridge) { simulatedToggle(); return; }
+      if (vpnConnectState === 'disconnected') { const s = servers[selectedServerIndex]; setVpnUIState('connecting'); VpnBridge.connect(s.config, s.name, selectedServerIndex); }
+      else { VpnBridge.disconnect(); }
+    }
+    function simulatedToggle() {
+      if (vpnConnectState === 'disconnected') { setVpnUIState('connecting'); setTimeout(() => { setVpnUIState('connected'); startSimStats(); }, 1500); }
+      else { setVpnUIState('disconnected'); stopSimStats(); }
+    }
+    let simT; function startSimStats() { simT = setInterval(() => { document.getElementById('hud-timer').innerText = '00:01:00'; document.getElementById('hud-dl').innerText = (Math.random()*8+14).toFixed(1)+' MB/s'; document.getElementById('hud-ul').innerText = (Math.random()*3+5).toFixed(1)+' MB/s'; }, 1000); }
+    function stopSimStats() { if(simT) clearInterval(simT); document.getElementById('hud-timer').innerText='00:00:00'; document.getElementById('hud-dl').innerText='0.0 MB/s'; document.getElementById('hud-ul').innerText='0.0 MB/s'; }
+    function onVpnStatus(s) { vpnConnectState=s.toLowerCase(); setVpnUIState(s); if(s==='CONNECTED'){document.getElementById('hud-metrics').classList.remove('hidden');if(hasNativeBridge)VpnBridge.checkConnectedDelay();}else if(s==='DISCONNECTED'){document.getElementById('hud-metrics').classList.add('hidden');stopSimStats();} }
+    function onVpnStats(d,ul,dl){ if(vpnConnectState!=='connected')return; document.getElementById('hud-timer').innerText=d||'00:00:00'; document.getElementById('hud-dl').innerText=dl||'0 B/s'; document.getElementById('hud-ul').innerText=ul||'0 B/s'; }
+    function onServerDelay(i,ms){ if(i>=0&&i<servers.length){servers[i].ping=ms>0?ms:null;renderServers();} }
+    function onConnectedDelay(ms){ if(ms>0) document.getElementById('hub-ping').innerText=ms+' ms'; }
+    function onCoreVersion(v){ document.getElementById('core-version-text').innerText='Xray Core '+v; }
+    function setVpnUIState(s){ var b=document.getElementById('vpn-main-button'),i=document.getElementById('vpn-main-icon'),l=document.getElementById('vpn-main-status-label'),p=document.getElementById('vpn-pulse-ring'); b.className='vpn-btn'; p.style.display='none';
+      if(s==='CONNECTED'||s==='connected'){b.classList.add('connected');i.className='fas fa-shield-alt';l.innerText='CONNECTED';p.style.display='block';}
+      else if(s==='CONNECTING'||s==='connecting'){b.classList.add('connecting');i.className='fas fa-sync-alt fa-spin';l.innerText='CONNECTING...';}
+      else{i.className='fas fa-power-off';l.innerText='DISCONNECTED';} }
+    function updateDashboard(){ var s=servers[selectedServerIndex]; document.getElementById('hub-server-name').innerText=s.name+' · '+s.protocol; document.getElementById('hub-server-desc').innerText=s.location; }
+    function useNode(idx){ selectedServerIndex=idx; updateDashboard(); renderServers(); if(hasNativeBridge&&servers[idx].ping===null){servers[idx].ping=-1;renderServers();VpnBridge.checkServerDelay(servers[idx].config,idx);} }
+    function renderServers(){ var c=document.getElementById('servers-container'); if(!c)return;
+      c.innerHTML=servers.map(function(s,idx){var a=idx===selectedServerIndex,tc=s.protocol==='VLESS'?'tag-vless':'tag-trojan',ph='<span class="ping-dot"></span><span>-- ms</span>';if(s.ping===-1)ph='<span class="ping-dot checking"></span><span>'+i18n[currentLang].checking+'</span>';else if(s.ping!==null&&s.ping>0)ph='<span class="ping-dot online"></span><span>'+s.ping+' ms</span>';
+      return '<div class="server-card'+(a?' active':'')+'" onclick="useNode('+idx+')"><div class="card-top"><span class="server-id">'+s.name+'</span><div class="server-ping">'+ph+'</div></div><div class="server-name-main">'+s.location+'<span class="tag '+tc+'">'+s.protocol+'</span></div><div class="server-meta"><span><i class="fas fa-globe-asia"></i> '+s.location+'</span></div><button class="card-action'+(a?' selected':'')+'" onclick="event.stopPropagation();useNode('+idx+')"><i class="fas '+(a?'fa-check':'fa-circle')+'"></i><span>'+(a?i18n[currentLang].selectedLabel:i18n[currentLang].selectNodeBtn)+'</span></button></div>';}).join(''); }
+    function setTheme(t){ document.querySelectorAll('#theme-light-btn,#theme-dark-btn').forEach(function(b){b.classList.remove('active');}); if(t==='dark'){document.body.classList.add('dark-mode');document.getElementById('theme-dark-btn').classList.add('active');}else{document.body.classList.remove('dark-mode');document.getElementById('theme-light-btn').classList.add('active');}localStorage.setItem('theme',t); }
+    function setFontSize(s){ document.body.classList.remove('size-small','size-medium','size-large');document.querySelectorAll('#size-sm-btn,#size-md-btn,#size-lg-btn').forEach(function(b){b.classList.remove('active');});document.body.classList.add('size-'+s);var m={small:'size-sm-btn',medium:'size-md-btn',large:'size-lg-btn'};document.getElementById(m[s]).classList.add('active');localStorage.setItem('fontSize',s); }
+    function setLanguage(l){ currentLang=l;localStorage.setItem('lang',l);document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.remove('active');});document.getElementById('btn-'+l).classList.add('active');document.querySelectorAll('[data-i18n]').forEach(function(e){var k=e.getAttribute('data-i18n');if(i18n[l][k])e.textContent=i18n[l][k];});renderServers();updateDashboard(); }
+    window.addEventListener('load',function(){ setTheme(localStorage.getItem('theme')||'dark'); setFontSize(localStorage.getItem('fontSize')||'medium'); setLanguage(currentLang); renderServers(); });
+  </script>
+  <div class="sidebar" id="sidebar"><div class="sidebar-header">Galaxy Tunnel</div>
+    <div onclick="switchPage('servers');closeSidebar()" class="sidebar-item active" id="nav-servers"><i class="fas fa-server"></i><span data-i18n="navServers">ဆာဗာများ</span></div>
+    <div onclick="switchPage('settings');closeSidebar()" class="sidebar-item" id="nav-settings"><i class="fas fa-cog"></i><span data-i18n="navSettings">Settings</span></div>
+    <div onclick="switchPage('contact');closeSidebar()" class="sidebar-item" id="nav-contact"><i class="fas fa-info-circle"></i><span data-i18n="navContact">ဆက်သွယ်ရန်</span></div>
+  </div>
+  <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+  <header><div class="flex items-center gap-3"><button class="text-xl" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button><div class="header-title">Galaxy Tunnel</div></div><div class="flex gap-2"><button class="lang-btn" id="btn-my" onclick="setLanguage('my')">MY</button><button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button></div></header>
+  <main>
+    <div class="page-content active" id="page-servers">
+      <div class="page-header mt-2 mb-4"><div class="page-title" data-i18n="serversTitle">Galaxy Tunnel</div><div class="page-subtitle" data-i18n="serversSubtitle">Secure. Fast. Limitless.</div><div class="core-version-badge" id="core-version-text">Xray Core</div></div>
+      <div class="conn-hub-panel"><div class="text-[10px] uppercase font-extrabold tracking-widest text-stone-400 dark:text-stone-500 mb-4">VPN Connection</div>
+        <div class="vpn-power-container"><div id="vpn-pulse-ring" class="vpn-outer-pulse"></div><button id="vpn-main-button" class="vpn-btn" onclick="toggleVPNConnection()"><i id="vpn-main-icon" class="fas fa-power-off"></i><span id="vpn-main-status-label" class="vpn-status-txt">DISCONNECTED</span></button></div>
+        <div class="w-full text-center border-t border-stone-200 dark:border-zinc-800 pt-4 mt-2"><div class="text-[9px] text-stone-400 dark:text-stone-500 uppercase font-semibold tracking-wider" data-i18n="selectedServer">Selected Server</div><div id="hub-server-name" class="font-bold text-stone-900 dark:text-white mt-1 text-sm">SG-01 · VLESS</div><div id="hub-server-desc" class="text-[11px] text-stone-500 dark:text-stone-400">Singapore</div></div>
+        <div id="hud-metrics" class="hidden"><div><div class="metric-label" data-i18n="duration">Duration</div><div id="hud-timer" class="metric-value">00:00:00</div></div><div><div class="metric-label text-emerald-500"><i class="fas fa-download mr-1"></i>DL</div><div id="hud-dl" class="metric-value">0.0 MB/s</div></div><div><div class="metric-label text-cyan-500"><i class="fas fa-upload mr-1"></i>UL</div><div id="hud-ul" class="metric-value">0.0 MB/s</div></div></div>
+      </div>
+      <div class="section-label" data-i18n="selectServerLabel">Select Server</div><div id="servers-container"></div>
+    </div>
+    <div class="page-content" id="page-settings"><div class="page-header"><div class="page-title" data-i18n="settingsTitle">Settings</div><div class="page-subtitle" data-i18n="settingsSubtitle">Customize your experience</div></div><div class="settings-group"><div class="settings-item"><div class="settings-label"><i class="fas fa-palette mr-2"></i><span data-i18n="themeLabel">Theme</span></div><div class="btn-group"><button class="opt-btn" id="theme-light-btn" onclick="setTheme('light')"><i class="fas fa-sun mr-1"></i><span data-i18n="lightMode">Light</span></button><button class="opt-btn" id="theme-dark-btn" onclick="setTheme('dark')"><i class="fas fa-moon mr-1"></i><span data-i18n="darkMode">Dark</span></button></div></div><div class="settings-item"><div class="settings-label"><i class="fas fa-text-height mr-2"></i><span data-i18n="textSizeLabel">Text Size</span></div><div class="btn-group"><button class="opt-btn" id="size-sm-btn" onclick="setFontSize('small')"><span data-i18n="textSmall">Small</span></button><button class="opt-btn" id="size-md-btn" onclick="setFontSize('medium')"><span data-i18n="textMedium">Medium</span></button><button class="opt-btn" id="size-lg-btn" onclick="setFontSize('large')"><span data-i18n="textLarge">Large</span></button></div></div></div></div>
+    <div class="page-content" id="page-contact"><div class="page-header"><div class="page-title" data-i18n="contactTitle">ဆက်သွယ်ရန်</div><div class="page-subtitle" data-i18n="contactSubtitle">Reach out anytime</div></div>
+      <a href="https://t.me/Swnt7771" target="_blank" class="contact-item"><div class="contact-icon"><i class="fab fa-telegram"></i></div><div class="contact-info"><div class="contact-label">Telegram</div><div class="contact-value">@Swnt7771</div></div></a>
+      <a href="https://www.facebook.com/share/14bd1ThErYb/" target="_blank" class="contact-item"><div class="contact-icon"><i class="fab fa-facebook"></i></div><div class="contact-info"><div class="contact-label">Facebook</div><div class="contact-value">Sal W Tun</div></div></a>
+      <a href="tel:09674688300" class="contact-item"><div class="contact-icon"><i class="fas fa-phone"></i></div><div class="contact-info"><div class="contact-label" data-i18n="phoneLabel">Phone</div><div class="contact-value">09674688300</div></div></a>
+      <div class="contact-item"><div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div><div class="contact-info"><div class="contact-label" data-i18n="addressLabel">Address</div><div class="contact-value" data-i18n="addressValue">Kayin State, Myawaddy</div></div></div>
+    </div>
+  </main>
+  <footer><p>© 2026 Galaxy Tunnel Team. All rights reserved.</p></footer>
+</body>
+</html>
