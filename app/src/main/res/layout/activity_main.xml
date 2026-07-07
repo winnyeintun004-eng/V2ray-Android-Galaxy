@@ -1,111 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginHorizontal="10dp"
     android:orientation="vertical"
-    android:id="@+id/main_layout"
-    tools:context=".MainActivity">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="V2ray Config :"
-        android:textSize="14sp" />
-
-    <EditText
-        android:id="@+id/v2ray_config"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="4dp"
-        android:layout_weight="1"
-        android:background="@android:drawable/dialog_holo_dark_frame"
-        android:gravity="top"
-        android:hint="v2ray config goes here"
-        android:textSize="12sp" />
-
+    android:background="@color/dark_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="56dp"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:background="@color/dark_bg"
+        android:elevation="2dp">
+
+        <ImageButton
+            android:id="@+id/btn_menu"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_menu"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:tint="@android:color/white"
+            android:contentDescription="Menu" />
 
         <TextView
-            android:id="@+id/connection_mode"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:text="connection mode : VPN_TUN"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:layout_weight="1"
+            android:text="Galaxy Tunnel"
+            android:textColor="@android:color/white"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:gravity="center" />
 
-        <TextView
-            android:id="@+id/server_delay"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:text="server delay : tap to test"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-
-        <TextView
-            android:id="@+id/connected_server_delay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:text="connected server delay : wait for connection"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/connection_duration"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:text="connection time : 00:00:00"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-
-        <TextView
-            android:id="@+id/connection_speed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:text="connection speed : 0 B/s | 0 B/s"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/connection_traffic"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:text="connection traffic : 0 B | 0 B"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/btn_lang_my"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:text="MY"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@color/text_secondary"
+                android:background="@drawable/btn_lang_bg"
+                android:clickable="true"
+                android:focusable="true" />
+            <TextView
+                android:id="@+id/btn_lang_en"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:text="EN"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@color/text_secondary"
+                android:background="@drawable/btn_lang_bg"
+                android:layout_marginStart="6dp"
+                android:clickable="true"
+                android:focusable="true" />
+        </LinearLayout>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_connection"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="DISCONNECTED"
-        android:textSize="14sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent"
+        android:background="@color/dark_bg">
 
-    <TextView
-        android:id="@+id/core_version"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="Xray Core 1.8"
-        android:textColor="@color/white"
-        android:textSize="10sp" />
+        <ScrollView
+            android:id="@+id/page_servers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            android:fillViewport="true">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:gravity="center_horizontal">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Galaxy Tunnel" android:textColor="@android:color/white" android:textSize="24sp" android:textStyle="bold" android:layout_marginBottom="4dp" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Secure. Fast. Limitless." android:textColor="@color/text_secondary" android:textSize="13sp" android:layout_marginBottom="4dp" />
+                <TextView android:id="@+id/tv_core_version" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Xray Core" android:textColor="@color/text_secondary" android:textSize="9sp" android:alpha="0.5" android:layout_marginBottom="20dp" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:background="@drawable/card_bg" android:padding="24dp" android:layout_marginBottom="24dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="VPN CONNECTION" android:textColor="@color/text_secondary" android:textSize="10sp" android:textStyle="bold" android:letterSpacing="0.1" android:layout_marginBottom="16dp" />
+                    <FrameLayout android:layout_width="140dp" android:layout_height="140dp" android:layout_marginBottom="16dp">
+                        <View android:id="@+id/vpn_pulse" android:layout_width="140dp" android:layout_height="140dp" android:layout_gravity="center" android:background="@drawable/pulse_bg" android:visibility="gone" />
+                        <LinearLayout android:id="@+id/btn_vpn" android:layout_width="120dp" android:layout_height="120dp" android:layout_gravity="center" android:gravity="center" android:orientation="vertical" android:background="@drawable/vpn_btn_bg" android:clickable="true" android:focusable="true">
+                            <ImageView android:id="@+id/iv_vpn_icon" android:layout_width="32dp" android:layout_height="32dp" android:src="@drawable/ic_power" android:tint="@color/text_secondary" />
+                            <TextView android:id="@+id/tv_vpn_status" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="DISCONNECTED" android:textColor="@color/text_secondary" android:textSize="10sp" android:textStyle="bold" android:letterSpacing="0.15" android:layout_marginTop="4dp" />
+                        </LinearLayout>
+                    </FrameLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:paddingTop="16dp" android:layout_marginTop="8dp">
+                        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border_color" android:layout_marginBottom="16dp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Selected Server" android:textColor="@color/text_secondary" android:textSize="9sp" android:textStyle="bold" android:letterSpacing="0.05" />
+                        <TextView android:id="@+id/tv_selected_server" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="SG-01 · VLESS" android:textColor="@android:color/white" android:textSize="14sp" android:textStyle="bold" android:layout_marginTop="4dp" />
+                        <TextView android:id="@+id/tv_selected_location" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="X CDN" android:textColor="@color/text_secondary" android:textSize="11sp" android:layout_marginTop="2dp" />
+                    </LinearLayout>
+                    <LinearLayout android:id="@+id/layout_stats" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:visibility="gone" android:paddingTop="16dp" android:layout_marginTop="8dp" />
+                </LinearLayout>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="SELECT SERVER" android:textColor="@color/text_secondary" android:textSize="11sp" android:textStyle="bold" android:letterSpacing="0.1" android:layout_marginBottom="12dp" android:paddingStart="4dp" />
+                <LinearLayout android:id="@+id/servers_container" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" />
+            </LinearLayout>
+        </ScrollView>
+
+        <ScrollView android:id="@+id/page_settings" android:layout_width="match_parent" android:layout_height="match_parent" android:visibility="gone">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Settings" android:textColor="@android:color/white" android:textSize="24sp" android:textStyle="bold" android:layout_marginBottom="4dp" android:layout_gravity="center" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Customize" android:textColor="@color/text_secondary" android:textSize="13sp" android:layout_marginBottom="24dp" android:layout_gravity="center" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/card_bg" android:padding="16dp" android:layout_marginBottom="14dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Theme" android:textColor="@android:color/white" android:textSize="14sp" android:textStyle="bold" android:layout_marginBottom="10dp" />
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                        <TextView android:id="@+id/btn_theme_light" android:layout_width="0dp" android:layout_height="38dp" android:layout_weight="1" android:text="Light" android:textSize="12sp" android:textStyle="bold" android:gravity="center" android:textColor="@color/text_secondary" android:background="@drawable/btn_lang_bg" android:clickable="true" />
+                        <TextView android:id="@+id/btn_theme_dark" android:layout_width="0dp" android:layout_height="38dp" android:layout_weight="1" android:text="Dark" android:textSize="12sp" android:textStyle="bold" android:gravity="center" android:textColor="@android:color/white" android:background="@drawable/btn_active_bg" android:clickable="true" android:layout_marginStart="6dp" />
+                    </LinearLayout>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Text Size" android:textColor="@android:color/white" android:textSize="14sp" android:textStyle="bold" android:layout_marginTop="16dp" android:layout_marginBottom="10dp" />
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                        <TextView android:id="@+id/btn_size_small" android:layout_width="0dp" android:layout_height="38dp" android:layout_weight="1" android:text="Small" android:textSize="12sp" android:textStyle="bold" android:gravity="center" android:textColor="@color/text_secondary" android:background="@drawable/btn_lang_bg" android:clickable="true" />
+                        <TextView android:id="@+id/btn_size_medium" android:layout_width="0dp" android:layout_height="38dp" android:layout_weight="1" android:text="Medium" android:textSize="12sp" android:textStyle="bold" android:gravity="center" android:textColor="@android:color/white" android:background="@drawable/btn_active_bg" android:clickable="true" android:layout_marginStart="6dp" />
+                        <TextView android:id="@+id/btn_size_large" android:layout_width="0dp" android:layout_height="38dp" android:layout_weight="1" android:text="Large" android:textSize="12sp" android:textStyle="bold" android:gravity="center" android:textColor="@color/text_secondary" android:background="@drawable/btn_lang_bg" android:clickable="true" android:layout_marginStart="6dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <ScrollView android:id="@+id/page_contact" android:layout_width="match_parent" android:layout_height="match_parent" android:visibility="gone">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Contact" android:textColor="@android:color/white" android:textSize="24sp" android:textStyle="bold" android:layout_marginBottom="4dp" android:layout_gravity="center" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Reach out anytime" android:textColor="@color/text_secondary" android:textSize="13sp" android:layout_marginBottom="24dp" android:layout_gravity="center" />
+                <include layout="@layout/item_contact" />
+            </LinearLayout>
+        </ScrollView>
+    </FrameLayout>
+
+    <View android:id="@+id/overlay" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#66000000" android:visibility="gone" android:clickable="true" />
+
+    <LinearLayout android:id="@+id/sidebar" android:layout_width="280dp" android:layout_height="match_parent" android:layout_gravity="start" android:orientation="vertical" android:background="@color/dark_card_bg" android:translationX="-280dp">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Galaxy Tunnel" android:textColor="@android:color/white" android:textSize="16sp" android:textStyle="bold" android:padding="20dp" />
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border_color" />
+        <LinearLayout android:id="@+id/nav_servers" android:layout_width="match_parent" android:layout_height="48dp" android:gravity="center_vertical" android:paddingHorizontal="16dp" android:background="@drawable/sidebar_active_bg" android:clickable="true">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Servers" android:textColor="@android:color/white" android:textSize="14sp" />
+        </LinearLayout>
+        <LinearLayout android:id="@+id/nav_settings" android:layout_width="match_parent" android:layout_height="48dp" android:gravity="center_vertical" android:paddingHorizontal="16dp" android:clickable="true">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Settings" android:textColor="@color/text_secondary" android:textSize="14sp" />
+        </LinearLayout>
+        <LinearLayout android:id="@+id/nav_contact" android:layout_width="match_parent" android:layout_height="48dp" android:gravity="center_vertical" android:paddingHorizontal="16dp" android:clickable="true">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Contact" android:textColor="@color/text_secondary" android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
